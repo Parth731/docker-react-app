@@ -31,6 +31,13 @@ pipeline {
         }
 
         stage('Deploy to Elastic Beanstalk') {
+            agent {
+                docker {
+                    image 'my-aws-cli'
+                    reuseNode true
+                    args '-u root --entrypoint=""'
+                }
+            }
             steps {
                 script {
                     // Configure AWS CLI
