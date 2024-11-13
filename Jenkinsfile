@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'parth731/learn-jenkins-docker-app'
-        AWS_REGION = 'ap-south-1'
+        AWS_DEFAULT_REGION = 'ap-south-1'
         APP_NAME = 'docker'
         ENV_NAME = 'docker-env'
         BUCKET_NAME = 'elasticbeanstalk-ap-south-1-597081897916'
@@ -35,7 +35,7 @@ pipeline {
                     // Deploy to AWS Elastic Beanstalk using AWS CLI
                    withCredentials([usernamePassword(credentialsId: 'docker-react-travis-ci-id', passwordVariable: 'AWS_ACCESS_KEY_ID', usernameVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh '''
-                            aws configure set region $AWS_REGION
+                            aws configure set region $AWS_DEFAULT_REGION
                         '''
                     }
                 }   
@@ -46,8 +46,8 @@ pipeline {
             steps {
                 sh '''
                     # Example deployment command
-                    eb init -p "Docker" my-app --region $AWS_REGION
-                    eb create my-env
+                    eb init $APP_NAME --region $AWS_DEFAULT_REGION --platform "Docker"
+                    eb use $ENV_NAME
                     eb deploy
                 '''
             }
