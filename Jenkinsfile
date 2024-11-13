@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     // Run tests inside the Docker container
-                    sh 'docker run -e CI=true $DOCKER_IMAGE:$DOCKER_TAG npm run test'
+                    sh 'docker run -e CI=true $DOCKER_IMAGE:$DOCKER_TAG npm run test -- --coverage'
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline {
                     // sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                     sh 'echo Dang@3107 | docker login -u parth731 --password-stdin'
                     // Push the Docker image to Docker Hub
-                    sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
+                    // sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
                 }
             }
         }
