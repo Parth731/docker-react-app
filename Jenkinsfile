@@ -2,7 +2,6 @@ pipeline {
     agent { docker { image 'docker' } }
     
     environment {
-        DOCKER_CONFIG = "${env.WORKSPACE}/.docker"  // Set Docker config in workspace
         CI = 'true'
     }
     
@@ -10,8 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mkdir -p $DOCKER_CONFIG'  // Create the custom Docker config directory
-                    sh 'docker build -t parth731/learn-jenkins-docker-app -f Dockerfile.dev .'
+                    sh 'sudo docker build -t parth731/learn-jenkins-docker-app -f Dockerfile.dev .'
                 }
             }
         }
@@ -19,7 +17,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'docker run -e CI=true parth731/learn-jenkins-docker-app npm run test'
+                    sh 'sudo docker run -e CI=true parth731/learn-jenkins-docker-app npm run test'
                 }
             }
         }
