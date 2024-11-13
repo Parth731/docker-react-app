@@ -1,11 +1,16 @@
-sudo: required
-language: generic
-
-services:
-  - docker
-
-before_install:
-  - docker build -t parth731/learn-jenkins-docker-app -f Dockerfile.dev .
-
+language: node_js
+node_js:
+ - "stable"
+cache:
+ directories:
+   - node_modules
 script:
-  - docker run -e CI=true parth731/learn-jenkins-docker-app npm run test
+ - npm test
+ - npm run build || true
+deploy:
+ provider: pages
+ skip_cleanup: true
+ github_token: $GITHUB_TOKEN
+ local_dir: build
+ on:
+   branch: master

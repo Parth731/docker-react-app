@@ -71,3 +71,24 @@
 
   }
   ```
+
+  ```js
+  sudo: required;
+  language: generic;
+  ```
+
+services:
+
+- docker
+
+before_install:
+
+- docker build -t parth731/learn-jenkins-docker-app -f Dockerfile.dev .
+
+script:
+
+- docker run -e CI=true parth731/learn-jenkins-docker-app npm run test
+
+```
+
+```
