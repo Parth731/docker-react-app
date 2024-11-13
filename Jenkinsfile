@@ -35,21 +35,11 @@ pipeline {
                     // Deploy to AWS Elastic Beanstalk using AWS CLI
                    withCredentials([usernamePassword(credentialsId: 'docker-react-travis-ci-id', passwordVariable: 'AWS_ACCESS_KEY_ID', usernameVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh '''
-                            aws configure set region $AWS_DEFAULT_REGION
+                            aws --version
+                            aws s3 ls
                         '''
                     }
                 }   
-            }
-        }
-
-        stage('Deploy to Elastic Beanstalk') {
-            steps {
-                sh '''
-                    # Example deployment command
-                    eb init $APP_NAME --region $AWS_DEFAULT_REGION --platform "Docker"
-                    eb use $ENV_NAME
-                    eb deploy
-                '''
             }
         }
     }
