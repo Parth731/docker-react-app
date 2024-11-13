@@ -1,24 +1,8 @@
 version: "3"
-
 services:
-  react-docker-project-dev:
-    container_name: react-docker-project-container
-    image: react-docker-project-dev-image
+  web:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
-      - "4000:3000"
-    volumes:
-      - /react-docker-app/node_modules
-      - ./:/react-docker-app
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-  # tests:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.dev
-  #   volumes:
-  #     - /react-dev-app/node_modules
-  #     - ./:/react-dev-app
-  #   command: ["npm", "run", "test"]
+      - "80:80"
