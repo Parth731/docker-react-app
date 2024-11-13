@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     // Deploy to AWS Elastic Beanstalk using AWS CLI
-                    sh """
+                    sh '''
                         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
                         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
                         aws configure set region $AWS_REGION
@@ -46,7 +46,7 @@ pipeline {
                         eb init $APP_NAME --region $AWS_REGION --platform "Docker"
                         eb use $ENV_NAME
                         eb deploy
-                    """
+                    '''
                 }
             }
         }
