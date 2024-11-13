@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Deploy to AWS Elastic Beanstalk using AWS CLI
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'docker-react-travis-ci']]) {
+                   withCredentials([usernamePassword(credentialsId: 'docker-react-travis-ci',              passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                         sh '''
                             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
                             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
