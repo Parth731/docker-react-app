@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     sh 'mkdir -p $DOCKER_CONFIG'  // Create the custom Docker config directory
-                    sh 'docker build -t parth731/docker-react -f Dockerfile.dev .'
+                    sh 'docker build -t parth731/learn-jenkins-docker-app -f Dockerfile.dev .'
                 }
             }
         }
@@ -19,7 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'docker run -e CI=true parth731/docker-react npm run test'
+                    sh 'docker run -e CI=true parth731/learn-jenkins-docker-app npm run test'
                 }
             }
         }
