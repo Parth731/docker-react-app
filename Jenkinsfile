@@ -29,25 +29,34 @@ pipeline {
             }
         }
 
-        stage('Deploy to Elastic Beanstalk') {
-            environment {
-                AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY')
-                AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_KEY')
-            }
+        stage('Configure AWS Credentials') {
             steps {
                 script {
                     // Deploy to AWS Elastic Beanstalk using AWS CLI
-                    sh '''
-                        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-                        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-                        aws configure set region $AWS_REGION
-                        
-                        # Deploy the Docker image to Elastic Beanstalk
-                        eb init $APP_NAME --region $AWS_REGION --platform "Docker"
-                        eb use $ENV_NAME
-                        eb deploy
-                    '''
-                }
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'docker-react-travis-ci']]) {
+                        sh '''
+                            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                            aws configure set region $AWS_REGION
+                            
+                            # Deploy the Docker image to Elastic Beanstalk
+                            eb init $APP_NAME --region $AWS_REGION --platform "Docker"
+                            eb use $ENV_NAME
+                            eb deploy
+                        '''
+                    }
+                }   
+            }
+        }
+
+        stage('Deploy to Elastic Beanstalk') {
+            steps {
+                sh '''
+                    # Example deployment command
+                    eb init -p "Docker" my-app --region $AWS_REGION
+                    eb create my-env
+                    eb deploy
+                '''
             }
         }
     }
